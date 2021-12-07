@@ -1,8 +1,27 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 
 function App(props) {
+  useEffect(() => {
+    const listener = {
+      componentDidAppear: () => {
+        console.log('RNN', 'App componentDidAppear');
+      },
+      componentDidDisappear: () => {
+        console.log('RNN', 'App componentDidDisappear');
+      },
+    };
+    // Register the listener to all events related to our component
+    const unsubscribe = Navigation.events().registerComponentListener(
+      listener,
+      props.componentId,
+    );
+    return () => {
+      // Make sure to unregister the listener during cleanup
+      unsubscribe.remove();
+    };
+  }, [props.componentId]);
   return (
     <View style={styles.background}>
       <View style={styles.content}>
@@ -18,6 +37,25 @@ function App(props) {
 }
 
 export function SomeScreen(props) {
+  useEffect(() => {
+    const listener = {
+      componentDidAppear: () => {
+        console.log('RNN', 'SomeScreen componentDidAppear');
+      },
+      componentDidDisappear: () => {
+        console.log('RNN', 'SomeScreen componentDidDisappear');
+      },
+    };
+    // Register the listener to all events related to our component
+    const unsubscribe = Navigation.events().registerComponentListener(
+      listener,
+      props.componentId,
+    );
+    return () => {
+      // Make sure to unregister the listener during cleanup
+      unsubscribe.remove();
+    };
+  }, [props.componentId]);
   return (
     <View style={styles.contentBG}>
       <View style={styles.content}>
